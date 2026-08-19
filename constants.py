@@ -17,7 +17,7 @@ default_params = {
     "search-filter": "Дате размещения",
     "sortDirection": "false",
     "pageNumber": "1",
-    "recordsPerPage": "_10",
+    "recordsPerPage": "_100",
     "showLotsInfoHidden": "false",
     "sortBy": "UPDATE_DATE",
     "currencyIdGeneral": "-1"

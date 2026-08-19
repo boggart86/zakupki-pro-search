@@ -13,7 +13,7 @@
         <div class="search__phrases">
           <label for="phrases">Словосочетания поиска</label>
           <br>
-          <input type="text" name="phrases" id="phrases" value="{{ params_dict.phrases }}">
+          <input type="text" name="phrases" id="phrases" value="{{ params_dict.phrases if params_dict.phrases else '' }}">
         </div>
         <br>
         <div class="search__law">
@@ -47,18 +47,18 @@
           <span class="search__price-label">Цена</span>
           <br>
           <label for="price-min">Минимальная</label>
-          <input type="number" name="price-min" id="price-min" value="{{ params_dict.price_min }}">
+          <input type="number" name="price-min" id="price-min" value="{{ params_dict.price_min if params_dict.price_min else '' }}">
           <label for="price-max">Максимальная</label>
-          <input type="number" name="price-max" id="price-max" value="{{ params_dict.price_max }}">
+          <input type="number" name="price-max" id="price-max" value="{{ params_dict.price_max if params_dict.price_max else '' }}">
         </div>
         <br>
         <div class="search__date">
           <span class="search__date-label">Окончание подачи заявок</span>
           <br>
           <label for="date-min">От</label>
-          <input type="date" name="date-min" id="date-min" value="{{ params_dict.date_min }}">
+          <input type="date" name="date-min" id="date-min" value="{{ params_dict.date_min if params_dict.date_min else '' }}">
           <label for="date-max">До</label>
-          <input type="date" name="date-max" id="date-max" value="{{ params_dict.date_max }}">
+          <input type="date" name="date-max" id="date-max" value="{{ params_dict.date_max if params_dict.date_max else '' }}">
         </div>
         <br>
         <input type="submit" value="Поиск🔎" class="btn-search">
