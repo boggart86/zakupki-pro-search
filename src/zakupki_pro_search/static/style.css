@@ -1,0 +1,81 @@
+* {padding: 0px;margin: 0px;border: none;}
+*,*::before,*::after {box-sizing: border-box;}
+input,button,textarea{font-family:inherit;}
+a,a:visited{text-decoration: none;}
+ul li{list-style: none;}
+html,body{height:100%;width:100%;}
+button{cursor: pointer;}
+
+main {
+	height: 100%;
+	padding: 50px;
+}
+
+.search {
+}
+.search__form {
+	background-color: #eeeeee;
+	padding: 10px;
+}
+.search__phrases>input {
+	width: 100%;
+	min-height: 2rem;
+	border: 1px solid #000;
+	
+}
+.search__law {
+}
+.search__purchase-stage {
+}
+.search__price {
+}
+.search__price-label {
+}
+.search__date {
+}
+.search__date-label {
+}
+.btn-search {
+	background-color: #7d7dff;
+	padding: 7px 15px;
+	border-radius: 3px;
+	font-size: 1.2rem;
+	cursor: pointer;
+}
+.results {
+	display: flex;
+	flex-direction: row-reverse;
+	gap: 10px;
+}
+.lots-per-phrase {
+	width: 20%;
+	padding: 5px;
+}
+.results__lots {
+	width: 80%;
+}
+.results__lots-list {
+}
+.results__lot {
+	margin-block: 10px;
+	border: 1px solid #e4e7f2;
+	border-radius: 3px;
+	box-shadow: 0 2px 5px -5px;
+	padding: 4px;
+}
+.results__lot-id {
+}
+.results__lot-cost {
+}
+.results__lot-desc {
+}
+.results__pagination {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.results__pagination ul {
+	display: flex;
+	font-size: 1.5rem;
+	gap: 10px;
+}

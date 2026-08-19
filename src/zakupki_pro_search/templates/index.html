@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{{ url_for('static', path='/style.css') }}">
+  <title>Поиск закупок</title>
+</head>
+<body>
+  <main>
+    <section class="search">
+      <form action="{{ url_for('search_results') }}" method="post" class="search__form">
+        <div class="search__phrases">
+          <label for="phrases">Словосочетания поиска</label>
+          <br>
+          <input type="text" name="phrases" id="phrases">
+        </div>
+        <br>
+        <div class="search__law">
+          <label for="law">Закон</label>
+          <br>
+          <input type="checkbox" name="law" value="44-fz" id="44-fz">
+          <label for="44-fz">44-ФЗ</label>
+          <br>
+          <input type="checkbox" name="law" value="223-fz" id="223-fz">
+          <label for="223-fz">223-ФЗ</label>
+        </div>
+        <br>
+        <div class="search__purchase-stage">
+          <label for="purchase-stage">Этап закупки</label>
+          <br>
+          <input type="checkbox" name="purchase-stage" value="submission-of-applications" id="submission-of-applications">
+          <label for="submission-of-applications">Подача заявок</label>
+          <br>
+          <input type="checkbox" name="purchase-stage" value="the-work-of-the-Commission" id="the-work-of-the-Commission">
+          <label for="the-work-of-the-Commission">Работа комиссии</label>
+          <br>
+          <input type="checkbox" name="purchase-stage" value="purchase-completed" id="purchase-completed">
+          <label for="purchase-completed">Закупка завершена</label>
+          <br>
+          <input type="checkbox" name="purchase-stage" value="purchase-cancelled" id="purchase-cancelled">
+          <label for="purchase-cancelled">Закупка отменена</label>
+          <br>
+        </div>
+        <br>
+        <div class="search__price">
+          <span class="search__price-label">Цена</span>
+          <br>
+          <label for="price-min">Минимальная</label>
+          <input type="number" name="price-min" id="price-min">
+          <label for="price-max">Максимальная</label>
+          <input type="number" name="price-max" id="price-max">
+        </div>
+        <br>
+        <div class="search__date">
+          <span class="search__date-label">Окончание подачи заявок</span>
+          <br>
+          <label for="date-min">От</label>
+          <input type="date" name="date-min" id="date-min">
+          <label for="date-max">До</label>
+          <input type="date" name="date-max" id="date-max">
+        </div>
+        <br>
+        <input type="submit" value="Поиск🔎" class="btn-search">
+      </form>
+    </section>
+    {% if is_none == False %}
+      {{ params_dict }}
+      <section class="results">
+        <aside class="lots-per-phrase">
+          <ul>
+            <li>
+              <span>6: бытовая техника</span>
+            </li>
+            <li>
+              <span>4: принтеры</span>
+            </li>
+            <!-- счетчики по словосочетаниям -->
+          </ul>
+        </aside>
+        <article class="results__lots">
+          <ol class="results__lots-list">
+            <li class="results__lot">
+              <a href="" class="results__lot-id">№ 0316300056726000013</a>
+              <br>
+              <span class="results__lot-cost">300 000.00 ₽</span>
+              <h4>Объект закупки</h4>
+              <p class="results__lot-desc">
+                  Поставка кухонного гарнитура со встраиваемой бытовой техникой для нужд краевого государственного бюджетного учреждения дом социального обслуживания «Минусинский»
+              </p>
+              <h4>Заказчик</h4>
+              <p class="results__lot-customer">
+                  КГБУ «Дом социального обслуживания «Минусинский»
+              </p>
+            </li>
+            <!-- остальные лоты -->
+          </ol>
+          <nav class="results__pagination">
+            <ul>
+              <li><a href=""><</a></li>
+              <li><span>1</span></li>
+              <li><a href="">></a></li>
+            </ul>
+          </nav>
+        </article>
+      </section>
+    {% endif %}
+  </main>
+</body>
+</html>
