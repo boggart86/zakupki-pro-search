@@ -37,8 +37,6 @@ def request_html(url: str, params: dict) -> str | None:
         # Проверяем статус ответа
         response.raise_for_status()  # Вызовет исключение для кодов 4xx/5xx
         response.encoding = 'utf-8'
-        with open("zakupki_result.html", "w", encoding="utf-8") as file:
-            file.write(response.text)
         return response.text
     except requests.exceptions.RequestException as e:
         print(f"Произошла ошибка при запросе: {e}")
@@ -105,7 +103,11 @@ if __name__ == "__main__":
         "ca": "on",
         "pc": "on",
         "pa": "on",
-        "currencyIdGeneral": "-1"
+        "priceFromGeneral": "400000",
+        "priceToGeneral": "1000000",
+        "currencyIdGeneral": "-1",
+        "applSubmissionCloseDateFrom": "19.08.2026",
+        "applSubmissionCloseDateTo": "22.08.2026"
     }
 
-    print(request_html(url, params))
+    print(request_html(url, params)[:300])

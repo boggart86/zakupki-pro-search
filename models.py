@@ -1,7 +1,6 @@
-from fastapi import FastAPI
 from pydantic import BaseModel, Field, field_validator
+from datetime import datetime
 
-app = FastAPI()
 
 class SearchParams(BaseModel):
     phrases: str | None = Field(None, alias="phrases")
@@ -30,10 +29,23 @@ class SearchParams(BaseModel):
         result = [item.strip() for item in v.split(',')]
         return result if result else None
 
+    @field_validator("date_min", "date_max", mode="after")
+    @classmethod
+    def split_phrases(cls, v: str | None) -> str | None:
+        """
+        Преобразует дату из формата YYYY-MM-DD в DD.MM.YYYY
+        """
+        if v is not None:
+            try:
+                dt = datetime.strptime(v, "%Y-%m-%d")
+                return dt.strftime("%d.%m.%Y")
+            except ValueError:
+                return v  # Если формат не совпадает, возвращаем как есть
+
 
 
 class Lot(BaseModel):
-    id: str
-    cost: str
-    item: str
-    customer: str
+    id: str # Номер закупки
+    cost: str # Стоимость закупки
+    item: str # объект закупки
+    customer: str # Заказчик
