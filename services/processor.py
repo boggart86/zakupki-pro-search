@@ -3,6 +3,8 @@ from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 import urllib3
 from .scraper import get_lots_from_html
+from datetime import datetime
+
 
 # ОТКЛЮЧАЕМ ПРЕДУПРЕЖДЕНИЯ SSL
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
@@ -46,16 +48,23 @@ def request_html(url: str, params: dict) -> str | None:
 
 
 def get_lots(base_url: str, params_dict: dict, translation: dict, default_params: dict) -> list[dict]:
-    phrases = [phrase.strip() for phrase in params_dict['phrases'].split(',')] if params_dict['phrases'] else ''
+    their_params_dict = params_dict.copy() #это локальная копия с данными под формат сайта к которму делаются запросы
+    phrases = [phrase.strip() for phrase in their_params_dict['phrases'].split(',')] if their_params_dict['phrases'] else ''
+    if their_params_dict['date_min']:
+        dt = datetime.strptime(their_params_dict['date_min'], "%Y-%m-%d")
+        their_params_dict['date_min'] = dt.strftime("%d.%m.%Y")
+    if their_params_dict['date_max']:
+        dt = datetime.strptime(their_params_dict['date_max'], "%Y-%m-%d")
+        their_params_dict['date_max'] = dt.strftime("%d.%m.%Y")
     lots = []
     clear_params = default_params
-    for param in params_dict:
-        if param != 'phrases' and params_dict[param]:
-            if isinstance(params_dict[param], list):
-                for val in params_dict[param]:
+    for param in their_params_dict:
+        if param != 'phrases' and their_params_dict[param]:
+            if isinstance(their_params_dict[param], list):
+                for val in their_params_dict[param]:
                     clear_params.update({translation[val]: 'on'})
             else:
-                clear_params.update({translation[param]: params_dict[param]})
+                clear_params.update({translation[param]: their_params_dict[param]})
     if phrases:
         for phrase in phrases:
             request_params = clear_params | {translation['phrase']: phrase}

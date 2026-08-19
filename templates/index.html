@@ -19,26 +19,26 @@
         <div class="search__law">
           <label for="law">Закон</label>
           <br>
-          <input type="checkbox" name="law" value="44-fz" id="44-fz">
+          <input type="checkbox" name="law" value="44-fz" id="44-fz" {% if '44-fz' in params_dict.law %}checked{% endif %}>
           <label for="44-fz">44-ФЗ</label>
           <br>
-          <input type="checkbox" name="law" value="223-fz" id="223-fz">
+          <input type="checkbox" name="law" value="223-fz" id="223-fz" {% if '223-fz' in params_dict.law %}checked{% endif %}>
           <label for="223-fz">223-ФЗ</label>
         </div>
         <br>
         <div class="search__purchase-stage">
           <label for="purchase-stage">Этап закупки</label>
           <br>
-          <input type="checkbox" name="purchase-stage" value="submission-of-applications" id="submission-of-applications">
+          <input type="checkbox" name="purchase-stage" value="submission-of-applications" id="submission-of-applications" {% if 'submission-of-applications' in params_dict.purchase_stage %}checked{% endif %}>
           <label for="submission-of-applications">Подача заявок</label>
           <br>
-          <input type="checkbox" name="purchase-stage" value="the-work-of-the-Commission" id="the-work-of-the-Commission">
+          <input type="checkbox" name="purchase-stage" value="the-work-of-the-Commission" id="the-work-of-the-Commission" {% if 'the-work-of-the-Commission' in params_dict.purchase_stage %}checked{% endif %}>
           <label for="the-work-of-the-Commission">Работа комиссии</label>
           <br>
-          <input type="checkbox" name="purchase-stage" value="purchase-completed" id="purchase-completed">
+          <input type="checkbox" name="purchase-stage" value="purchase-completed" id="purchase-completed" {% if 'purchase-completed' in params_dict.purchase_stage %}checked{% endif %}>
           <label for="purchase-completed">Закупка завершена</label>
           <br>
-          <input type="checkbox" name="purchase-stage" value="purchase-cancelled" id="purchase-cancelled">
+          <input type="checkbox" name="purchase-stage" value="purchase-cancelled" id="purchase-cancelled" {% if 'purchase-cancelled' in params_dict.purchase_stage %}checked{% endif %}>
           <label for="purchase-cancelled">Закупка отменена</label>
           <br>
         </div>
@@ -47,18 +47,18 @@
           <span class="search__price-label">Цена</span>
           <br>
           <label for="price-min">Минимальная</label>
-          <input type="number" name="price-min" id="price-min">
+          <input type="number" name="price-min" id="price-min" value="{{ params_dict.price_min }}">
           <label for="price-max">Максимальная</label>
-          <input type="number" name="price-max" id="price-max">
+          <input type="number" name="price-max" id="price-max" value="{{ params_dict.price_max }}">
         </div>
         <br>
         <div class="search__date">
           <span class="search__date-label">Окончание подачи заявок</span>
           <br>
           <label for="date-min">От</label>
-          <input type="date" name="date-min" id="date-min">
+          <input type="date" name="date-min" id="date-min" value="{{ params_dict.date_min }}">
           <label for="date-max">До</label>
-          <input type="date" name="date-max" id="date-max">
+          <input type="date" name="date-max" id="date-max" value="{{ params_dict.date_max }}">
         </div>
         <br>
         <input type="submit" value="Поиск🔎" class="btn-search">
