@@ -2,6 +2,7 @@ import requests
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 import urllib3
+from .scraper import get_lots_from_html
 
 # ОТКЛЮЧАЕМ ПРЕДУПРЕЖДЕНИЯ SSL
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
@@ -33,7 +34,8 @@ def request_html(url: str, params: dict) -> str | None:
             timeout=15,
             verify=False
         )
-        
+        print(f"Запрос: {response.url}")
+        print(f"Статус: {response.status_code}")
         # Проверяем статус ответа
         response.raise_for_status()  # Вызовет исключение для кодов 4xx/5xx
         response.encoding = 'utf-8'
@@ -43,43 +45,29 @@ def request_html(url: str, params: dict) -> str | None:
         return None
 
 
-translation = {
-    "phrase": "searchString",
-    "44-fz": "fz44",
-    "223-fz": "fz223",
-    'submission-of-applications': 'af',
-    'the-work-of-the-Commission': 'ca',
-    'purchase-completed': 'pc',
-    'purchase-cancelled': 'pa',
-    'price_min': 'priceFromGeneral',
-    'price_max': 'priceToGeneral',
-    'date_min': 'applSubmissionCloseDateFrom',
-    'date_max': 'applSubmissionCloseDateTo'
-}
-
-const_params = 'morphology=on&search-filter=Дате+размещения&sortDirection=false&pageNumber=1&recordsPerPage=_10&showLotsInfoHidden=false&sortBy=UPDATE_DATE&currencyIdGeneral=-1&'
-
-'''
-{'phrases': ['техника', 'школьные парты'], 'law': ['44-fz', '223-fz'], 'purchase_stage': ['submission-of-applications', 'the-work-of-the-Commission', 'purchase-completed', 'purchase-cancelled'], 'price_min': 1234, 'price_max': 3456654, 'date_min': '2026-08-19', 'date_max': '2026-08-28'}
-def prepare_params(params, dict):
-'''
-
-def get_lots(base_url: str, params_dict: dict, translation: dict, const_params: str) -> list[dict]:
-    phrases = params_dict['phrases']
+def get_lots(base_url: str, params_dict: dict, translation: dict, default_params: dict) -> list[dict]:
+    phrases = [phrase.strip() for phrase in params_dict['phrases'].split(',')] if params_dict['phrases'] else ''
     lots = []
-    clear_params = {}
+    clear_params = default_params
     for param in params_dict:
-        if param != 'phrases':
+        if param != 'phrases' and params_dict[param]:
             if isinstance(params_dict[param], list):
                 for val in params_dict[param]:
                     clear_params.update({translation[val]: 'on'})
             else:
                 clear_params.update({translation[param]: params_dict[param]})
-    for phrase in phrases:
-        requst_lots = []
-        request_params = clear_params | {translation['phrase']: phrase}
-        response_html = request_html(url=base_url + const_params, params=request_params)
-        
+    if phrases:
+        for phrase in phrases:
+            request_params = clear_params | {translation['phrase']: phrase}
+            response_html = request_html(url=base_url, params=request_params)
+            requst_lots = get_lots_from_html(response_html)
+            lots += requst_lots
+    else:
+        response_html = request_html(url=base_url, params=clear_params)
+        requst_lots = get_lots_from_html(response_html)
+        lots += requst_lots
+    print("Запросы выполнены")
+    return lots        
 
 
 

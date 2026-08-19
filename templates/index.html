@@ -13,7 +13,7 @@
         <div class="search__phrases">
           <label for="phrases">Словосочетания поиска</label>
           <br>
-          <input type="text" name="phrases" id="phrases">
+          <input type="text" name="phrases" id="phrases" value="{{ params_dict.phrases }}">
         </div>
         <br>
         <div class="search__law">
@@ -64,8 +64,8 @@
         <input type="submit" value="Поиск🔎" class="btn-search">
       </form>
     </section>
+    {{ params_dict }}
     {% if is_none == False %}
-      {{ params_dict }}
       <section class="results">
         <aside class="lots-per-phrase">
           <ul>
@@ -80,20 +80,17 @@
         </aside>
         <article class="results__lots">
           <ol class="results__lots-list">
-            <li class="results__lot">
-              <a href="" class="results__lot-id">№ 0316300056726000013</a>
-              <br>
-              <span class="results__lot-cost">300 000.00 ₽</span>
-              <h4>Объект закупки</h4>
-              <p class="results__lot-desc">
-                  Поставка кухонного гарнитура со встраиваемой бытовой техникой для нужд краевого государственного бюджетного учреждения дом социального обслуживания «Минусинский»
-              </p>
-              <h4>Заказчик</h4>
-              <p class="results__lot-customer">
-                  КГБУ «Дом социального обслуживания «Минусинский»
-              </p>
-            </li>
-            <!-- остальные лоты -->
+            {% for lot in lots %}
+              <li class="results__lot">
+                <a href="{{ lot.href }}" class="results__lot-id">{{ lot.id }}</a>
+                <br>
+                <span class="results__lot-cost">{{ lot.cost }}</span>
+                <h4>Объект закупки</h4>
+                <p class="results__lot-desc">{{ lot.item }}</p>
+                <h4>Заказчик</h4>
+                <p class="results__lot-customer">{{ lot.customer }}</p>
+              </li>
+            {% endfor %}
           </ol>
           <nav class="results__pagination">
             <ul>

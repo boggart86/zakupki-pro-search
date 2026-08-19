@@ -3,49 +3,23 @@ from datetime import datetime
 
 
 class SearchParams(BaseModel):
-    phrases: str | None = Field(None, alias="phrases")
-    law: list[str] | None = Field(None, alias="law")
-    purchase_stage: list[str] | None = Field(None, alias="purchase-stage")
-    price_min: int | None = Field(None, alias="price-min")
-    price_max: int | None = Field(None, alias="price-max")
-    date_min: str | None = Field(None, alias="date-min")
-    date_max: str | None = Field(None, alias="date-max")
-    
-    @field_validator("*", mode="before")
-    @classmethod
-    def handle_empty_strings(cls, v):
-        """Преобразует пустые строки в None"""
-        return None if v == "" or v is None else v
-
-    @field_validator("phrases", mode="after")
-    @classmethod
-    def split_phrases(cls, v: str | None) -> list[str] | None:
-        """
-        Разделяет строку по запятой и убирает пробелы
-        Возвращает список строк или None
-        """
-        if v is None:
-            return None
-        result = [item.strip() for item in v.split(',')]
-        return result if result else None
+    phrases: str = Field('', alias="phrases")
+    law: list[str] | str = Field(None, alias="law")
+    purchase_stage: list[str] | str = Field(None, alias="purchase-stage")
+    price_min: int | str = Field(None, alias="price-min")
+    price_max: int | str = Field(None, alias="price-max")
+    date_min: str = Field(None, alias="date-min")
+    date_max: str = Field(None, alias="date-max")
 
     @field_validator("date_min", "date_max", mode="after")
     @classmethod
-    def split_phrases(cls, v: str | None) -> str | None:
+    def split_phrases(cls, value: str | None) -> str | None:
         """
         Преобразует дату из формата YYYY-MM-DD в DD.MM.YYYY
         """
-        if v is not None:
+        if value is not None:
             try:
-                dt = datetime.strptime(v, "%Y-%m-%d")
+                dt = datetime.strptime(value, "%Y-%m-%d")
                 return dt.strftime("%d.%m.%Y")
             except ValueError:
-                return v  # Если формат не совпадает, возвращаем как есть
-
-
-
-class Lot(BaseModel):
-    id: str # Номер закупки
-    cost: str # Стоимость закупки
-    item: str # объект закупки
-    customer: str # Заказчик
+                return value  # Если формат не совпадает, возвращаем как есть
