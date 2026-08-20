@@ -58,24 +58,29 @@ def form_params_to_query(params_dict: dict) -> dict:
     return query_params
 
 def get_lots(base_url: str, params_dict: dict, translation: dict, default_params: dict) -> list[dict]:
-    their_params_dict = params_dict.copy() #это локальная копия с данными под формат сайта к которму делаются запросы
-    phrases = [phrase.strip() for phrase in their_params_dict['phrases'].split(',')] if 'phrases' in their_params_dict else ''    
-    if 'date_min' in their_params_dict:
-        dt = datetime.strptime(their_params_dict['date_min'], "%Y-%m-%d")
-        their_params_dict['date_min'] = dt.strftime("%d.%m.%Y")
-    if 'date_max' in their_params_dict:
-        dt = datetime.strptime(their_params_dict['date_max'], "%Y-%m-%d")
-        their_params_dict['date_max'] = dt.strftime("%d.%m.%Y")
+    their_params_dict ={} #словарь с параметрами под формат сайта к которму делаются запросы
+    for param in params_dict:
+        if param != 'phrases':
+            their_params_dict[translation[param]] = params_dict[param]
+
+    if 'applSubmissionCloseDateFrom' in their_params_dict:
+        dt = datetime.strptime(their_params_dict['applSubmissionCloseDateFrom'], "%Y-%m-%d")
+        their_params_dict['applSubmissionCloseDateFrom'] = dt.strftime("%d.%m.%Y")
+    if 'applSubmissionCloseDateTo' in their_params_dict:
+        dt = datetime.strptime(their_params_dict['applSubmissionCloseDateTo'], "%Y-%m-%d")
+        their_params_dict['applSubmissionCloseDateTo'] = dt.strftime("%d.%m.%Y")
+
     lots = []
-    clear_params = default_params | params_dict
+    request_params = default_params | their_params_dict
+    phrases = [phrase.strip() for phrase in params_dict['phrases'].split(',')] if 'phrases' in params_dict else ''
+
     if phrases:
         for phrase in phrases:
-            request_params = clear_params | {translation['phrase']: phrase}
-            response_html = request_html(url=base_url, params=request_params)
+            response_html = request_html(url=base_url, params=(request_params | {translation['phrase']: phrase}))
             requst_lots = get_lots_from_html(response_html)
             lots += requst_lots
     else:
-        response_html = request_html(url=base_url, params=clear_params)
+        response_html = request_html(url=base_url, params=request_params)
         requst_lots = get_lots_from_html(response_html)
         lots += requst_lots
     print("Запросы выполнены")
