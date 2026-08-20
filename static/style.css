@@ -6,6 +6,10 @@ ul li{list-style: none;}
 html,body{height:100%;width:100%;}
 button{cursor: pointer;}
 
+body {
+	font-family: "Roboto", sans-serif;
+}
+
 main {
 	height: 100%;
 	padding: 50px;

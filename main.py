@@ -1,11 +1,11 @@
 from fastapi import FastAPI, Request, Form
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from typing import Annotated
 import uvicorn
 from models import SearchParams
-from services.processor import get_lots
+from services.processor import get_lots, form_params_to_query
 from constants import translation, default_params
 
 
@@ -32,10 +32,19 @@ async def main_page(request: Request):
         request=request, name="index.html", context={"params_dict": params_dict, "is_none": is_none}
     )
 
-
-@app.post('/')
-async def search_results(request: Request, params: Annotated[SearchParams, Form()]):
+@app.post('/submit', response_class=RedirectResponse)
+async def submit(request: Request, params: Annotated[SearchParams, Form()]):
     params_dict = params.model_dump()
+    is_none = is_all_false_dict(params_dict)
+    if not is_none:
+        query_params = form_params_to_query(params_dict)
+        query_url = "&".join([f"{k}={v}" for k, v in query_params.items()])
+        return RedirectResponse(url=f"/result?{query_url}", status_code=303)
+    return RedirectResponse(url="/", status_code=303)
+
+@app.get('/result', response_class=HTMLResponse)
+async def search_results(request: Request):
+    params_dict = dict(request.query_params)
     is_none = is_all_false_dict(params_dict)
     lots = []
     if not is_none:

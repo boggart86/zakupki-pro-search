@@ -46,25 +46,28 @@ def request_html(url: str, params: dict) -> str | None:
         print(f"Произошла ошибка при запросе: {e}")
         return None
 
+def form_params_to_query(params_dict: dict) -> dict:
+    query_params = {}
+    for param in params_dict:
+        if params_dict[param]:
+            if isinstance(params_dict[param], list):
+                for val in params_dict[param]:
+                    query_params.update({val: 'on'})
+            else:
+                query_params.update({param: params_dict[param]})
+    return query_params
 
 def get_lots(base_url: str, params_dict: dict, translation: dict, default_params: dict) -> list[dict]:
     their_params_dict = params_dict.copy() #это локальная копия с данными под формат сайта к которму делаются запросы
-    phrases = [phrase.strip() for phrase in their_params_dict['phrases'].split(',')] if their_params_dict['phrases'] else ''
-    if their_params_dict['date_min']:
+    phrases = [phrase.strip() for phrase in their_params_dict['phrases'].split(',')] if 'phrases' in their_params_dict else ''    
+    if 'date_min' in their_params_dict:
         dt = datetime.strptime(their_params_dict['date_min'], "%Y-%m-%d")
         their_params_dict['date_min'] = dt.strftime("%d.%m.%Y")
-    if their_params_dict['date_max']:
+    if 'date_max' in their_params_dict:
         dt = datetime.strptime(their_params_dict['date_max'], "%Y-%m-%d")
         their_params_dict['date_max'] = dt.strftime("%d.%m.%Y")
     lots = []
-    clear_params = default_params
-    for param in their_params_dict:
-        if param != 'phrases' and their_params_dict[param]:
-            if isinstance(their_params_dict[param], list):
-                for val in their_params_dict[param]:
-                    clear_params.update({translation[val]: 'on'})
-            else:
-                clear_params.update({translation[param]: their_params_dict[param]})
+    clear_params = default_params | params_dict
     if phrases:
         for phrase in phrases:
             request_params = clear_params | {translation['phrase']: phrase}

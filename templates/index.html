@@ -5,11 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="{{ url_for('static', path='/style.css') }}">
   <title>Поиск закупок</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 </head>
 <body>
   <main>
     <section class="search">
-      <form action="{{ url_for('search_results') }}" method="post" class="search__form">
+      <form action="{{ url_for('submit') }}" method="post" class="search__form">
         <div class="search__phrases">
           <label for="phrases">Словосочетания поиска</label>
           <br>
@@ -82,7 +85,7 @@
           <ol class="results__lots-list">
             {% for lot in lots %}
               <li class="results__lot">
-                <a href="{{ lot.href }}" class="results__lot-id">{{ lot.id }}</a>
+                <a href="{{ lot.href }}" class="results__lot-id" target="_blank" rel="noopener noreferrer">{{ lot.id }}</a>
                 <br>
                 <span class="results__lot-cost">{{ lot.cost }}</span>
                 <h4>Объект закупки</h4>
