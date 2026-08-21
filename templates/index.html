@@ -67,10 +67,12 @@
         <input type="submit" value="Поиск🔎" class="btn-search">
       </form>
     </section>
-    {{ params_dict }}
+    {{ params_dict }}<br>
+    <h3>Всего результатов: {{ lots|length }}</h2>
     {% if is_none == False %}
       <section class="results">
         <aside class="lots-per-phrase">
+          <h4>Кол-во лотов по фразам:</h4>
           <ul>
             {% for phrase, lots in lots_per_phrase.items()|sort(attribute='1', reverse=True) %}
               <li>
