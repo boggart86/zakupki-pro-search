@@ -22,26 +22,26 @@
         <div class="search__law">
           <label for="law">Закон</label>
           <br>
-          <input type="checkbox" name="law" value="44-fz" id="44-fz" {% if '44-fz' in params_dict.law %}checked{% endif %}>
+          <input type="checkbox" name="law" value="44-fz" id="44-fz" {% if '44-fz' in params_dict %}checked{% endif %}>
           <label for="44-fz">44-ФЗ</label>
           <br>
-          <input type="checkbox" name="law" value="223-fz" id="223-fz" {% if '223-fz' in params_dict.law %}checked{% endif %}>
+          <input type="checkbox" name="law" value="223-fz" id="223-fz" {% if '223-fz' in params_dict %}checked{% endif %}>
           <label for="223-fz">223-ФЗ</label>
         </div>
         <br>
         <div class="search__purchase-stage">
           <label for="purchase-stage">Этап закупки</label>
           <br>
-          <input type="checkbox" name="purchase-stage" value="submission-of-applications" id="submission-of-applications" {% if 'submission-of-applications' in params_dict.purchase_stage %}checked{% endif %}>
+          <input type="checkbox" name="purchase-stage" value="submission-of-applications" id="submission-of-applications" {% if 'submission-of-applications' in params_dict %}checked{% endif %}>
           <label for="submission-of-applications">Подача заявок</label>
           <br>
-          <input type="checkbox" name="purchase-stage" value="the-work-of-the-Commission" id="the-work-of-the-Commission" {% if 'the-work-of-the-Commission' in params_dict.purchase_stage %}checked{% endif %}>
+          <input type="checkbox" name="purchase-stage" value="the-work-of-the-Commission" id="the-work-of-the-Commission" {% if 'the-work-of-the-Commission' in params_dict %}checked{% endif %}>
           <label for="the-work-of-the-Commission">Работа комиссии</label>
           <br>
-          <input type="checkbox" name="purchase-stage" value="purchase-completed" id="purchase-completed" {% if 'purchase-completed' in params_dict.purchase_stage %}checked{% endif %}>
+          <input type="checkbox" name="purchase-stage" value="purchase-completed" id="purchase-completed" {% if 'purchase-completed' in params_dict %}checked{% endif %}>
           <label for="purchase-completed">Закупка завершена</label>
           <br>
-          <input type="checkbox" name="purchase-stage" value="purchase-cancelled" id="purchase-cancelled" {% if 'purchase-cancelled' in params_dict.purchase_stage %}checked{% endif %}>
+          <input type="checkbox" name="purchase-stage" value="purchase-cancelled" id="purchase-cancelled" {% if 'purchase-cancelled' in params_dict %}checked{% endif %}>
           <label for="purchase-cancelled">Закупка отменена</label>
           <br>
         </div>
@@ -72,13 +72,11 @@
       <section class="results">
         <aside class="lots-per-phrase">
           <ul>
-            <li>
-              <span>6: бытовая техника</span>
-            </li>
-            <li>
-              <span>4: принтеры</span>
-            </li>
-            <!-- счетчики по словосочетаниям -->
+            {% for phrase, lots in lots_per_phrase.items()|sort(attribute='1', reverse=True) %}
+              <li>
+                <span>{{ lots }}: {{ phrase }}</span>
+              </li>
+            {% endfor %}
           </ul>
         </aside>
         <article class="results__lots">

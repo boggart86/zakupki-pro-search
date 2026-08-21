@@ -48,9 +48,19 @@ async def search_results(request: Request):
     is_none = is_all_false_dict(params_dict)
     lots = []
     if not is_none:
-        lots = get_lots(base_url=base_url, params_dict=params_dict, translation=translation, default_params=default_params)
+        lots, lots_per_phrase = get_lots(
+            base_url=base_url,
+            params_dict=params_dict,
+            translation=translation,
+            default_params=default_params
+        )
     return templates.TemplateResponse(
-        request=request, name="index.html", context={"params_dict": params_dict, "is_none": is_none, "lots": lots}
+        request=request, name="index.html", context={
+            "params_dict": params_dict,
+            "is_none": is_none,
+            "lots": lots,
+            "lots_per_phrase": lots_per_phrase
+        }
     )
 
 

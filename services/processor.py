@@ -57,7 +57,7 @@ def form_params_to_query(params_dict: dict) -> dict:
                 query_params.update({param: params_dict[param]})
     return query_params
 
-def get_lots(base_url: str, params_dict: dict, translation: dict, default_params: dict) -> list[dict]:
+def get_lots(base_url: str, params_dict: dict, translation: dict, default_params: dict) -> dict:
     their_params_dict ={} #словарь с параметрами под формат сайта к которму делаются запросы
     for param in params_dict:
         if param != 'phrases':
@@ -70,7 +70,8 @@ def get_lots(base_url: str, params_dict: dict, translation: dict, default_params
         dt = datetime.strptime(their_params_dict['applSubmissionCloseDateTo'], "%Y-%m-%d")
         their_params_dict['applSubmissionCloseDateTo'] = dt.strftime("%d.%m.%Y")
 
-    lots = []
+    lots = [] # список лотов ввиде словаря
+    lots_per_phrase = {} # количество лотов по каждой фразе
     request_params = default_params | their_params_dict
     phrases = [phrase.strip() for phrase in params_dict['phrases'].split(',')] if 'phrases' in params_dict else ''
 
@@ -79,12 +80,15 @@ def get_lots(base_url: str, params_dict: dict, translation: dict, default_params
             response_html = request_html(url=base_url, params=(request_params | {translation['phrase']: phrase}))
             requst_lots = get_lots_from_html(response_html)
             lots += requst_lots
+            lots_per_phrase[phrase] = len(requst_lots)
     else:
         response_html = request_html(url=base_url, params=request_params)
         requst_lots = get_lots_from_html(response_html)
-        lots += requst_lots
+        lots = requst_lots
     print("Запросы выполнены")
-    return lots        
+
+
+    return lots, lots_per_phrase      
 
 
 
