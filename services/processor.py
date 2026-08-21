@@ -49,18 +49,20 @@ def request_html(url: str, params: dict) -> str | None:
 def form_params_to_query(params_dict: dict) -> dict:
     query_params = {}
     for param in params_dict:
-        if params_dict[param]:
-            if isinstance(params_dict[param], list):
-                for val in params_dict[param]:
-                    query_params.update({val: 'on'})
-            else:
-                query_params.update({param: params_dict[param]})
+        if isinstance(params_dict[param], list):
+            for val in params_dict[param]:
+                query_params.update({val: 'on'})
+        else:
+            query_params.update({param: params_dict[param]})
     return query_params
 
 def get_lots(base_url: str, params_dict: dict, translation: dict, default_params: dict) -> dict:
+    print(params_dict)
     their_params_dict ={} #словарь с параметрами под формат сайта к которму делаются запросы
     for param in params_dict:
-        if param != 'phrases':
+        if param == 'excl_phrases':
+            their_params_dict[translation[param]] = '|'.join([phrase.strip() for phrase in params_dict[param].replace(';', ',').split(',')]) + '|'
+        elif param != 'phrases':
             their_params_dict[translation[param]] = params_dict[param]
 
     if 'applSubmissionCloseDateFrom' in their_params_dict:
@@ -69,11 +71,12 @@ def get_lots(base_url: str, params_dict: dict, translation: dict, default_params
     if 'applSubmissionCloseDateTo' in their_params_dict:
         dt = datetime.strptime(their_params_dict['applSubmissionCloseDateTo'], "%Y-%m-%d")
         their_params_dict['applSubmissionCloseDateTo'] = dt.strftime("%d.%m.%Y")
+    print(their_params_dict)
 
     lots = [] # список лотов ввиде словаря
     lots_per_phrase = {} # количество лотов по каждой фразе
     request_params = default_params | their_params_dict
-    phrases = [phrase.strip() for phrase in params_dict['phrases'].split(',')] if 'phrases' in params_dict else ''
+    phrases = [phrase.strip() for phrase in params_dict['phrases'].replace(';', ',').split(',')] if 'phrases' in params_dict else ''
 
     if phrases:
         for phrase in phrases:

@@ -16,7 +16,12 @@
         <div class="search__phrases">
           <label for="phrases">Словосочетания поиска</label>
           <br>
-          <input type="text" name="phrases" id="phrases" value="{{ params_dict.phrases if params_dict.phrases else '' }}">
+          <input type="text" name="phrases" id="phrases" value="{{ params_dict.phrases if params_dict.phrases else '' }}" placeholder="бытовая техник, принтеры, ...">
+        </div>
+        <div class="search__excl-phrases">
+          <label for="phrases">Исключения поиска</label>
+          <br>
+          <input type="text" name="excl-phrases" id="excl-phrases" value="{{ params_dict.excl_phrases if params_dict.excl_phrases else '' }}" placeholder="оценке, диагностике, ...">
         </div>
         <br>
         <div class="search__law">
@@ -72,14 +77,16 @@
     {% if is_none == False %}
       <section class="results">
         <aside class="lots-per-phrase">
-          <h4>Кол-во лотов по фразам:</h4>
-          <ul>
-            {% for phrase, lots in lots_per_phrase.items()|sort(attribute='1', reverse=True) %}
-              <li>
-                <span>{{ lots }}: {{ phrase }}</span>
-              </li>
-            {% endfor %}
-          </ul>
+          {% if lots_per_phrase %}
+            <h4>Кол-во лотов по фразам:</h4>
+            <ul>
+              {% for phrase, lots in lots_per_phrase.items()|sort(attribute='1', reverse=True) %}
+                <li>
+                  <span>{{ lots }}: {{ phrase }}</span>
+                </li>
+              {% endfor %}
+            </ul>
+          {% endif %}
         </aside>
         <article class="results__lots">
           <ol class="results__lots-list">
@@ -95,13 +102,6 @@
               </li>
             {% endfor %}
           </ol>
-          <nav class="results__pagination">
-            <ul>
-              <li><a href=""><</a></li>
-              <li><span>1</span></li>
-              <li><a href="">></a></li>
-            </ul>
-          </nav>
         </article>
       </section>
     {% endif %}

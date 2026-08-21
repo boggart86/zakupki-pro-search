@@ -27,6 +27,10 @@ main {
 	border: 1px solid #000;
 	
 }
+.search__excl-phrases>input {
+	width: 100%;
+	border: 1px solid #000;
+}
 .search__law {
 }
 .search__purchase-stage {
@@ -76,14 +80,4 @@ main {
 .results__lot-cost {
 }
 .results__lot-desc {
-}
-.results__pagination {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-}
-.results__pagination ul {
-	display: flex;
-	font-size: 1.5rem;
-	gap: 10px;
 }

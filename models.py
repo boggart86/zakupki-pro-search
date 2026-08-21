@@ -3,6 +3,7 @@ from pydantic import BaseModel, Field, field_validator
 
 class SearchParams(BaseModel):
     phrases: str = Field('', alias="phrases")
+    excl_phrases: str = Field('', alias="excl-phrases")
     law: list[str] | str = Field('', alias="law")
     purchase_stage: list[str] | str = Field('', alias="purchase-stage")
     price_min: int | str = Field('', alias="price-min")
