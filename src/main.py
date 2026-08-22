@@ -4,9 +4,9 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from typing import Annotated
 import uvicorn
-from models import SearchParams
-from services.processor import get_lots, form_params_to_query
-from constants import translation, default_params
+from src.models import SearchParams
+from src.services.processor import get_lots, form_params_to_query
+from src.constants import translation, default_params
 
 
 app = FastAPI(title="To-Do App")
@@ -61,13 +61,4 @@ async def search_results(request: Request):
             "lots": lots,
             "lots_per_phrase": lots_per_phrase
         }
-    )
-
-
-if __name__ == "__main__":
-    uvicorn.run(
-        "main:app",
-        host="127.0.0.1",
-        port=8000,
-        reload=True
     )
