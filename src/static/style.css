@@ -15,6 +15,12 @@ main {
 	padding: 50px;
 }
 
+input[type="text"],
+input[type="date"],
+input[type="number"] {
+	border: 1px solid #000;
+}
+
 .search {
 }
 .search__form {
@@ -24,12 +30,10 @@ main {
 .search__phrases>input {
 	width: 100%;
 	min-height: 2rem;
-	border: 1px solid #000;
 	
 }
 .search__excl-phrases>input {
 	width: 100%;
-	border: 1px solid #000;
 }
 .search__law {
 }
