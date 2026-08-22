@@ -1,5 +1,4 @@
 from bs4 import BeautifulSoup
-import re
 from typing import List, Dict, Any
 
 
@@ -66,7 +65,7 @@ def get_lots_from_html(html: str) -> List[Dict[str, Any]]:
 
 
 if __name__ == "__main__":
-    from processor import request_html
+    from src.services.processor import request_html
     # Пример использования
     # Сначала нужно получить HTML через request_html
     url = "https://zakupki.gov.ru/epz/order/extendedsearch/results.html"

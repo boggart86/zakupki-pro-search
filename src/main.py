@@ -11,10 +11,10 @@ from constants import translation, default_params
 
 app = FastAPI(title="To-Do App")
 
-app.mount("/static", StaticFiles(directory="static"), name="static")
+app.mount("/static", StaticFiles(directory="src/static"), name="static")
 
 
-templates = Jinja2Templates(directory="templates")
+templates = Jinja2Templates(directory="src/templates")
 
 
 base_url = "https://zakupki.gov.ru/epz/order/extendedsearch/results.html"

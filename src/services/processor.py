@@ -52,7 +52,7 @@ def form_params_to_query(params_dict: dict) -> dict:
         if isinstance(params_dict[param], list):
             for val in params_dict[param]:
                 query_params.update({val: 'on'})
-        else:
+        elif params_dict[param]:
             query_params.update({param: params_dict[param]})
     return query_params
 
